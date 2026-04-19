@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COSMIC FORGE — Automotive Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+SC:wght@600;700&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Rajdhani:wght@400;500;600;700&family=Teko:wght@500;600;700&display=swap" rel="stylesheet">
+<script>
+  try {
+    if (localStorage.getItem('cosmic-forge-theme') === 'dark') {
+      document.documentElement.classList.add('dark-mode');
+    }
+  } catch {}
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loading-overlay">
+  <div class="loader-inner">
+    <div class="loader-brand">
+      <img class="loader-logo-image" src="./images/Logo.png" alt="Cosmic Forge logo" draggable="false">
+    </div>
+    <div class="orbital-loader">
+      <svg class="orbital-svg" viewBox="0 0 120 120">
+        <defs>
+          <linearGradient id="orbGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:rgba(232,212,77,0);stop-opacity:0"/>
+            <stop offset="100%" style="stop-color:#E8D44D;stop-opacity:1"/>
+          </linearGradient>
+        </defs>
+        <circle class="orbital-track" cx="60" cy="60" r="50"/>
+        <circle class="orbital-arc"   cx="60" cy="60" r="50"/>
+        <circle class="orbital-dot"   cx="60" cy="10" r="4"/>
+      </svg>
+    </div>
+    <div class="loader-progress-area">
+      <div class="loading-bar-wrap"><div class="loading-bar" id="load-bar"></div></div>
+      <div class="loader-bottom">
+        <div class="loading-status" id="load-status">INITIALIZING STUDIO…</div>
+        <div class="loader-pct" id="load-pct">0%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+  <header id="topbar">
+    <div class="brand">
+      <img class="brand-logo-image" src="./images/Logo.png" alt="Cosmic Forge logo" draggable="false">
+      <div class="brand-wordmark">Cosmic Forge</div>
+    </div>
+    <div class="tb-rule"></div>
+    <div class="specs-row">
+      <div class="spec"><span class="slbl">Engine</span><span class="sval">V10 5.2L</span></div>
+      <div class="spec"><span class="slbl">Power</span><span class="sval">640 HP</span></div>
+      <div class="spec"><span class="slbl">0–100</span><span class="sval">2.9 s</span></div>
+      <div class="spec"><span class="slbl">Drivetrain</span><span class="sval">AWD</span></div>
+      <div class="spec"><span class="slbl">Top Speed</span><span class="sval">325 km/h</span></div>
+    </div>
+    <div class="tb-rule"></div>
+    <div class="price-blk">
+      <span class="plbl">Price</span>
+      <span class="pval">$254,900</span>
+      <span class="pnote">Estimated</span>
+    </div>
+  </header>
+
+  <div id="stage">
+    <div id="car-label">
+      <div class="cm">Lamborghini</div>
+      <div class="cname">Revuelto</div>
+      <div class="cvar">LP 610-4</div>
+    </div>
+
+    <div id="view-tabs">
+      <button class="vtb active" onclick="setView('exterior',this)">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="7" width="20" height="9" rx="2.5"/><circle cx="6" cy="16" r="1.8"/><circle cx="16" cy="16" r="1.8"/></svg>Exterior
+      </button>
+      <button class="vtb" onclick="setView('close',this)">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="7"/><path d="m19 19-3.5-3.5"/></svg>Close View
+      </button>
+      <button class="vtb" onclick="setView('interior',this)">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 7h18v8a2 2 0 01-2 2H4a2 2 0 01-2-2V7z"/><path d="M7 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Interior
+      </button>
+    </div>
+
+    <!-- ── UPDATED VD PANEL: unique specs not shown elsewhere, repositioned right ── -->
+    <div id="vd-panel">
+      <div class="vdh"><span class="vdtitle">Chassis &amp; Performance</span><div class="vdline"></div></div>
+      <div class="vdgrid">
+        <div class="vdi"><div class="vil">Curb Weight</div><div class="viv">1,422 kg</div></div>
+        <div class="vdi"><div class="vil">Displacement</div><div class="viv">5,204 cc</div></div>
+        <div class="vdi"><div class="vil">Max RPM</div><div class="viv">8,250</div></div>
+        <div class="vdi"><div class="vil">Gearbox</div><div class="viv">7-DCT</div></div>
+        <div class="vdi"><div class="vil">Wheelbase</div><div class="viv">2,620 mm</div></div>
+        <div class="vdi"><div class="vil">Fuel Tank</div><div class="viv">83 L</div></div>
+      </div>
+    </div>
+
+    <div id="lpill">
+      <div class="spill">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="15" cy="4" r="2.5"/><circle cx="5" cy="10" r="2.5"/><circle cx="15" cy="16" r="2.5"/><line x1="7.3" y1="11.2" x2="12.7" y2="14.8"/><line x1="12.7" y1="5.2" x2="7.3" y2="8.8"/></svg>Share Car
+      </div>
+    </div>
+
+    <div id="rpill">
+      <div class="spill r">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7L1 10l3 3M7 4l3-3 3 3M13 16l-3 3-3-3M16 7l3 3-3 3"/></svg>Drag to Rotate
+      </div>
+      <button class="rico theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle dark mode">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="10" cy="10" r="2.5"/><path d="M10 1v3M10 16v3M2.2 3.5l2.1 2.1M15.7 15.7l2.1 2.1M1 10h3M16 10h3M2.2 16.5l2.1-2.1M15.7 4.3l2.1-2.1"/></svg>
+      </button>
+    </div>
+
+    <canvas id="three-canvas"></canvas>
+
+    <div id="cam-bar">
+      <span class="cam-lbl">Camera Presets</span>
+      <button class="cbtn active" id="cp-front34" data-camera="front34" title="Click: 3/4 front. Double-click: full front.">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="6" width="18" height="9" rx="2"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg><span>3/4 Front</span>
+      </button>
+      <button class="cbtn" id="cp-side" data-camera="side" title="Click: one side. Double-click: opposite side.">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h16M2 10h16M2 14h16"/></svg><span>Side</span>
+      </button>
+      <button class="cbtn" id="cp-rear" data-camera="rear" title="Click: 3/4 rear. Double-click: full rear.">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 15H2M5 6h10l2 9H3L5 6z"/></svg><span>Rear</span>
+      </button>
+      <button class="cbtn" id="cp-top" data-camera="top" title="Click: top front. Double-click: top rear.">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="14" height="7" rx="1.5"/><circle cx="7" cy="14" r="1.3"/><circle cx="13" cy="14" r="1.3"/></svg><span>Top</span>
+      </button>
+      <button id="drive-btn">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="8"/><path d="M8 6l6 4-6 4V6z" fill="currentColor" stroke="none"/></svg>INITIATE HYPER DRIVE →
+      </button>
+    </div>
+  </div>
+
+  <div id="bpanel" data-mode="exterior" data-config-view="original">
+    <div class="bpanel-hint">Hover at the top to view vehicle details +</div>
+    <div class="binner">
+      <div class="bnav">
+        <div class="bnav-copy">
+          <div class="bptitle">MODIFICATION</div>
+          <div class="bpsub">Customize Your Revuelto</div>
+        </div>
+        <div class="bptabs">
+          <div class="bptab active" onclick="setPanelTab(this,'exterior')">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="6" width="18" height="9" rx="2"/><circle cx="5.5" cy="15" r="1.5"/><circle cx="14.5" cy="15" r="1.5"/></svg>Exterior
+          </div>
+          <div class="bptab" onclick="setPanelTab(this,'interior')">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13a2 2 0 01-2 2H6l-4 4V4a2 2 0 012-2h12a2 2 0 012 2v9z"/></svg>Interior
+          </div>
+          <div class="bptab" onclick="setPanelTab(this,'views')">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="8"/><circle cx="10" cy="10" r="3.5"/></svg>Views
+          </div>
+        </div>
+      </div>
+
+      <div class="bsep"></div>
+
+      <div class="csec csec-colors">
+        <div class="csh"><span class="csname">Body Color</span><span class="csminus">—</span></div>
+        <div class="cgrid" id="color-grid">
+          <div class="csw active" data-paint-hex="0xF5C518" onclick="selectColor(this,0xF5C518)">
+            <div class="cdot" style="background:#F5C518">
+              <svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#333" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg>
+            </div><span>Giallo Orion</span>
+          </div>
+          <div class="csw" data-paint-hex="0x6A35A4" onclick="selectColor(this,0x6A35A4)">
+            <div class="cdot" style="background:#6A35A4">
+              <svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg>
+            </div><span>Viola Aletheia</span>
+          </div>
+          <div class="csw" data-paint-hex="0x777777" onclick="selectColor(this,0x777777)">
+            <div class="cdot" style="background:#777">
+              <svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg>
+            </div><span>Grigio Lynx</span>
+          </div>
+          <div class="csw" data-paint-hex="0x0D0D0D" onclick="selectColor(this,0x0d0d0d)">
+            <div class="cdot" style="background:#0d0d0d">
+              <svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg>
+            </div><span>Nero Noctis</span>
+          </div>
+          <div class="csw" data-paint-hex="0x1B3B6F" onclick="selectColor(this,0x1B3B6F)">
+            <div class="cdot" style="background:#1B3B6F">
+              <svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg>
+            </div><span>Blu Eleos</span>
+          </div>
+          <div class="csw" data-paint-hex="0xCC1122" onclick="selectColor(this,0xCC1122)">
+            <div class="cdot" style="background:#CC1122">
+              <svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg>
+            </div><span>Rosso Efesto</span>
+          </div>
+          <div class="csw" data-paint-hex="0x228822" onclick="selectColor(this,0x228822)">
+            <div class="cdot" style="background:#228822">
+              <svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg>
+            </div><span>Verde Mantis</span>
+          </div>
+          <div class="csw" data-paint-hex="0xFF6B1A" onclick="selectColor(this,0xFF6B1A)">
+            <div class="cdot" style="background:#FF6B1A">
+              <svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg>
+            </div><span>Arancio Borealis</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bsep"></div>
+
+      <div class="csec csec-wheels">
+        <div class="csh"><span class="csname">Wheels</span><span class="csminus">—</span></div>
+        <div class="wgrid" id="wheel-grid">
+          <div class="wsw active" data-wheel-type="diamante" onclick="selectWheel(this,'diamante')"><div class="wimg"><canvas id="wc-0" width="70" height="70"></canvas></div><div class="wname">Diamante Black</div><div class="wsize">20" Forged</div></div>
+          <div class="wsw" data-wheel-type="silver" onclick="selectWheel(this,'silver')"><div class="wimg"><canvas id="wc-1" width="70" height="70"></canvas></div><div class="wname">Silver</div><div class="wsize">20" Forged</div></div>
+          <div class="wsw" data-wheel-type="bronze" onclick="selectWheel(this,'bronze')"><div class="wimg"><canvas id="wc-2" width="70" height="70"></canvas></div><div class="wname">Bronze</div><div class="wsize">20" Forged</div></div>
+        </div>
+      </div>
+
+      <div class="bsep"></div>
+
+      <div class="csec csec-calipers">
+        <div class="csh"><span class="csname">Brake Calipers</span><span class="csminus">—</span></div>
+        <div class="calgrid">
+          <div class="calsw active" data-brake-hex="0xF5C518" onclick="selectCaliper(this,0xF5C518)"><div class="caldot" style="background:#F5C518"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#333" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></div><span>Yellow</span></div>
+          <div class="calsw" data-brake-hex="0xCC1122" onclick="selectCaliper(this,0xCC1122)"><div class="caldot" style="background:#CC1122"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></div><span>Red</span></div>
+          <div class="calsw" data-brake-hex="0x111111" onclick="selectCaliper(this,0x111111)"><div class="caldot" style="background:#111"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></div><span>Black</span></div>
+        </div>
+      </div>
+
+      <div class="views-panel">
+        <button class="cbtn view-card active" data-camera="front34" title="Click: 3/4 front. Double-click: full front.">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="6" width="18" height="9" rx="2"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg>
+          <span>3/4 Front</span>
+          <small>Double-click: Front</small>
+        </button>
+        <button class="cbtn view-card" data-camera="side" title="Click: one side. Double-click: opposite side.">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h16M2 10h16M2 14h16"/></svg>
+          <span>Side</span>
+          <small>Double-click: Opposite</small>
+        </button>
+        <button class="cbtn view-card" data-camera="rear" title="Click: 3/4 rear. Double-click: full rear.">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 15H2M5 6h10l2 9H3L5 6z"/></svg>
+          <span>3/4 Rear</span>
+          <small>Double-click: Rear</small>
+        </button>
+        <button class="cbtn view-card" data-camera="top" title="Click: top front. Double-click: top rear.">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="14" height="7" rx="1.5"/><circle cx="7" cy="14" r="1.3"/><circle cx="13" cy="14" r="1.3"/></svg>
+          <span>Top</span>
+          <small>Double-click: Opposite</small>
+        </button>
+      </div>
+      <button id="bpanel-cycle" type="button" onclick="cycleConfigView()" aria-label="Open body configuration" title="Cycle modification panel">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 4 6 6-6 6"/></svg>
+      </button>
+    </div>
+    <div class="bfocus" aria-hidden="true">
+      <div class="bfocus-shell">
+        <div class="bfocus-nav">
+          <div class="bfocus-kicker">Modification Index</div>
+          <button class="focus-tab" type="button" data-config-view="original" onclick="setConfigView('original')">Original</button>
+          <button class="focus-tab active" type="button" data-config-view="body" onclick="setConfigView('body')">Body</button>
+          <button class="focus-tab" type="button" data-config-view="wheel" onclick="setConfigView('wheel')">Wheel</button>
+          <button class="focus-tab" type="button" data-config-view="brake" onclick="setConfigView('brake')">Brake</button>
+        </div>
+        <div class="bfocus-stage">
+          <div class="bfocus-head">
+            <div class="bfocus-title" id="config-focus-title">Body</div>
+            <div class="bfocus-copy" id="config-focus-copy">Premium exterior finishes with the full body color palette.</div>
+          </div>
+
+          <div class="focus-view focus-view-body" data-focus-panel="body">
+            <div class="focus-color-grid">
+              <button class="focus-color-card active" type="button" data-paint-hex="0xF5C518" onclick="selectColor(this,0xF5C518)">
+                <span class="focus-color-swatch" style="background:#F5C518"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#333" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></span>
+                <span class="focus-color-name">Giallo Orion</span>
+                <span class="focus-color-meta">Premium Solid</span>
+              </button>
+              <button class="focus-color-card" type="button" data-paint-hex="0x6A35A4" onclick="selectColor(this,0x6A35A4)">
+                <span class="focus-color-swatch" style="background:#6A35A4"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></span>
+                <span class="focus-color-name">Viola Aletheia</span>
+                <span class="focus-color-meta">Premium Pearl</span>
+              </button>
+              <button class="focus-color-card" type="button" data-paint-hex="0x777777" onclick="selectColor(this,0x777777)">
+                <span class="focus-color-swatch" style="background:#777777"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></span>
+                <span class="focus-color-name">Grigio Lynx</span>
+                <span class="focus-color-meta">Premium Metallic</span>
+              </button>
+              <button class="focus-color-card" type="button" data-paint-hex="0x0D0D0D" onclick="selectColor(this,0x0D0D0D)">
+                <span class="focus-color-swatch" style="background:#0D0D0D"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></span>
+                <span class="focus-color-name">Nero Noctis</span>
+                <span class="focus-color-meta">Premium Gloss</span>
+              </button>
+              <button class="focus-color-card" type="button" data-paint-hex="0x1B3B6F" onclick="selectColor(this,0x1B3B6F)">
+                <span class="focus-color-swatch" style="background:#1B3B6F"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></span>
+                <span class="focus-color-name">Blu Eleos</span>
+                <span class="focus-color-meta">Premium Metallic</span>
+              </button>
+              <button class="focus-color-card" type="button" data-paint-hex="0xCC1122" onclick="selectColor(this,0xCC1122)">
+                <span class="focus-color-swatch" style="background:#CC1122"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></span>
+                <span class="focus-color-name">Rosso Efesto</span>
+                <span class="focus-color-meta">Premium Sport</span>
+              </button>
+              <button class="focus-color-card" type="button" data-paint-hex="0x228822" onclick="selectColor(this,0x228822)">
+                <span class="focus-color-swatch" style="background:#228822"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></span>
+                <span class="focus-color-name">Verde Mantis</span>
+                <span class="focus-color-meta">Premium Pearl</span>
+              </button>
+              <button class="focus-color-card" type="button" data-paint-hex="0xFF6B1A" onclick="selectColor(this,0xFF6B1A)">
+                <span class="focus-color-swatch" style="background:#FF6B1A"><svg class="chk" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="13,4 6,11 3,8"/></svg></span>
+                <span class="focus-color-name">Arancio Borealis</span>
+                <span class="focus-color-meta">Premium Solid</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="focus-view focus-view-wheel" data-focus-panel="wheel">
+            <div class="focus-wheel-grid">
+              <button class="focus-wheel-card active" type="button" data-wheel-type="diamante" onclick="selectWheel(this,'diamante')">
+                <span class="focus-wheel-image"><canvas id="wc-f0" width="84" height="84"></canvas></span>
+                <span class="focus-wheel-name">Diamante Black</span>
+                <span class="focus-wheel-meta">20&quot; Forged</span>
+              </button>
+              <button class="focus-wheel-card" type="button" data-wheel-type="silver" onclick="selectWheel(this,'silver')">
+                <span class="focus-wheel-image"><canvas id="wc-f1" width="84" height="84"></canvas></span>
+                <span class="focus-wheel-name">Silver</span>
+                <span class="focus-wheel-meta">20&quot; Forged</span>
+              </button>
+              <button class="focus-wheel-card" type="button" data-wheel-type="bronze" onclick="selectWheel(this,'bronze')">
+                <span class="focus-wheel-image"><canvas id="wc-f2" width="84" height="84"></canvas></span>
+                <span class="focus-wheel-name">Bronze</span>
+                <span class="focus-wheel-meta">20&quot; Forged</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="focus-view focus-view-brake" data-focus-panel="brake">
+            <div class="focus-brake-grid">
+              <button class="focus-brake-card active" type="button" data-brake-hex="0xF5C518" onclick="selectCaliper(this,0xF5C518)">
+                <span class="focus-brake-image"><canvas id="bd-f0" width="120" height="84"></canvas></span>
+                <span class="focus-brake-name">Yellow</span>
+                <span class="focus-brake-meta">Brake Disc Finish</span>
+              </button>
+              <button class="focus-brake-card" type="button" data-brake-hex="0xCC1122" onclick="selectCaliper(this,0xCC1122)">
+                <span class="focus-brake-image"><canvas id="bd-f1" width="120" height="84"></canvas></span>
+                <span class="focus-brake-name">Red</span>
+                <span class="focus-brake-meta">Brake Disc Finish</span>
+              </button>
+              <button class="focus-brake-card" type="button" data-brake-hex="0x111111" onclick="selectCaliper(this,0x111111)">
+                <span class="focus-brake-image"><canvas id="bd-f2" width="120" height="84"></canvas></span>
+                <span class="focus-brake-name">Black</span>
+                <span class="focus-brake-meta">Brake Disc Finish</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="footer">
+    <div class="live"><div class="ldot"></div>All changes are applied in real-time</div>
+    <div class="fbtns">
+      <button class="fbtn"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 17l-6-4-6 4V3a2 2 0 012-2h8a2 2 0 012 2v14z"/></svg>Save Build</button>
+      <button class="fbtn"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="14" cy="4" r="2.2"/><circle cx="4" cy="9" r="2.2"/><circle cx="14" cy="14" r="2.2"/><line x1="6.1" y1="10.1" x2="11.9" y2="12.9"/><line x1="11.9" y1="5.1" x2="6.1" y2="7.9"/></svg>Share</button>
+    </div>
+  </footer>
+</div>
+
+<script type="module" src="./script.js"></script>
+</body>
+</html> 
